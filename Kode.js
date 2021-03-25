@@ -59,6 +59,8 @@ let aktif = {
 
 let templatePesan = `🕌 Pukul <code>{waktu}</code> WIB, waktunya <b>{jadwal}</b> untuk {lokasi}, {daerah} dan sekitarnya.
 
+📑 Jadwal Imsyakiyah hari ini <b>{hariTanggal}</b> :
+
 <code>{jadwalSemua}</code>
 
 🔖 <u>Sumber</u>: Kemenag RI`
