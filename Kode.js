@@ -20,6 +20,7 @@ let adminBot = 1234567890;
 
 // inisiasi bot, biarkan yang ini gak usah diubah
 var tg = new telegram.daftar(token);
+var user = new telegram.user();
 
 // sesuaikan zona waktu kalian masing-masing ya.
 let zonaTime = 'GMT+7'
@@ -101,8 +102,12 @@ function cariIDLokasi() {
     return data;
 }
 
+function deleteJadwalSholat() {
+    user.delete('sholat');
+}
+
 function getAPISholat() {
-    let waktu = Utilities.formatDate(APISholat.besok(), zonaTime, "yyyy-MM")
+    let waktu = Utilities.formatDate(new Date(), zonaTime, "yyyy-MM")
     let pecah = waktu.split('-')
     let tahun = pecah[0]
     let bulan = pecah[1]
@@ -118,6 +123,7 @@ function getAPISholat() {
 
 function getDBholat() {
     var r = user.getValue('sholat')
+    if (!r) return { status: false, message: 'Tidak ada data.' };
     var hasil = JSON.parse(r)
     let data = hasil.data;
     Logger.log(`getDBholat: ${data.id}\n\n${data.lokasi}\n${data.daerah}` + '\n\nTerdapat ' + data.jadwal.length + ' jadwal data.')
@@ -131,7 +137,7 @@ function tampilkanJadwal() {
 
     if (!infoSholat.status) {
         let ret = getAPISholat()
-        return tg.sendMessage(tujuanID, `🚫 Data Sholat belum ada.\n📄 ${infoSholat.message ? infoSholat.message : '-'}\n\n🔖 Proses mendapatkan data API Sholat kembali.\nHasil: ${ret.status ? '✅ sukses.' : '📛 ' + ret.message}`)
+        return tg.sendMessage(adminBot, `🚫 ${infoSholat.message ? infoSholat.message : '-'}\n⏳ Proses mendapatkan data API Sholat.\n🔖 Hasil: ${ret.status ? '✅ sukses.' : '📛 ' + ret.message}`)
     }
 
     let date = new Date()
