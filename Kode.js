@@ -107,17 +107,21 @@ function deleteJadwalSholat() {
 }
 
 function getAPISholat() {
-    let waktu = Utilities.formatDate(new Date(), zonaTime, "yyyy-MM")
-    let pecah = waktu.split('-')
-    let tahun = pecah[0]
-    let bulan = pecah[1]
+    try {
+        let waktu = Utilities.formatDate(new Date(), zonaTime, "yyyy-MM")
+        let pecah = waktu.split('-')
+        let tahun = pecah[0]
+        let bulan = pecah[1]
 
-    // dapatkan jadwal langsung 1 bulan
-    let fetch = new tg.fetch('https://api.myquran.com/v1/sholat/jadwal/' + idLokasi + '/' + tahun + '/' + bulan)
-    let hasil = fetch.get()
-    user.setValue('sholat', JSON.stringify(hasil))
-    let data = hasil.data;
-    Logger.log(`${data.id}\n\n${data.lokasi}\n${data.daerah}` + '\n\nMendapatkan ' + data.jadwal.length + ' jadwal data.')
+        // dapatkan jadwal langsung 1 bulan
+        let fetch = new tg.fetch('https://api.myquran.com/v1/sholat/jadwal/' + idLokasi + '/' + tahun + '/' + bulan)
+        var hasil = fetch.get()
+        user.setValue('sholat', JSON.stringify(hasil))
+        let data = hasil.data;
+        Logger.log(`${data.id}\n\n${data.lokasi}\n${data.daerah}` + '\n\nMendapatkan ' + data.jadwal.length + ' jadwal data.')
+    } catch (e) {
+        var hasil = { status: false, message: e.message }
+    }
     return hasil;
 }
 
