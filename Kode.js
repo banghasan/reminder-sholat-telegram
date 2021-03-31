@@ -96,10 +96,13 @@ let customPesan = {
 // --- //-// --- // 
 
 
+// base URL
+let base_url_api = 'https://api.myquran.com/v1'
+let fetchAPI = new tg.fetch(base_url_api)
+
 // jalankan untuk mendapatkan ID lokasi
 function cariIDLokasi() {
-    let fetch = new tg.fetch('https://api.myquran.com/v1/sholat/kota/cari/' + lokasi)
-    let data = fetch.get()
+    let data = fetchAPI.get('/sholat/kota/cari/' + lokasi)
     Logger.log(tg.util.outToJSON(data, 1))
     return data;
 }
