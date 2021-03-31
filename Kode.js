@@ -133,17 +133,18 @@ function getAPISholat() {
 function getDBholat() {
     let sholat = user.getValue('sholat')
     if (!sholat) return { status: false, message: 'Tidak ada data.' };
-
+    sholat = JSON.parse(sholat)
+  
     let bulan = Utilities.formatDate(new Date(), zonaTime, "MM")
     if (!sholat.data.bulan) return { status: false, message: 'Tidak ada field bulan' };
     if (!sholat.data.bulan == bulan) return { status: false, message: 'Tidak terdapat data bulan ' + bulan };
-
-    var hasil = JSON.parse(sholat)
+  
+    var hasil = sholat
     let data = hasil.data;
     Logger.log(`getDBholat: ${data.id}\n\n${data.lokasi}\n${data.daerah}` + '\n\nTerdapat ' + data.jadwal.length + ' jadwal data.')
     // Logger.log(`sample: ${tg.util.outToJSON(data.jadwal[0])}`)
     return hasil;
-}
+  }
 
 function tampilkanJadwal() {
     let infoSholat = getDBholat()
