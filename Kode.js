@@ -81,7 +81,7 @@ let quoteRandom = tg.util.random(dataQuote)
 // jika tidak ingin di custom, kasih aja false yang berarti pakai templatePesan di atas
 // berikut ini contoh-contohnya:
 let customPesan = {
-    imsak: '⚠️ Pukul <code>{waktu}</code> WIB, waktunya <b>{jadwal}</b>. Shubuh 10 menit lagi! <i>Siap-siap yak.</i>',
+    imsak: '⚠️ Pukul <code>{waktu}</code> WIB, waktunya <b>{jadwal}</b> untuk {lokasi} dan sekitarnya. Shubuh 10 menit lagi! <i>Siap-siap yak.</i>',
     subuh: false,
     terbit: false,
     dhuha: "🌥 Sudah masuk waktu {jadwal}. Sunnah tunaikan sholat {jadwal} yaa.",
