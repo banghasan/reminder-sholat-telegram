@@ -13,10 +13,10 @@ var token = 'TOKENBOT'
 
 // masukkan ID User/Tujuan Bot akan membroadcast jadwal sholat
 // ID User/Grup/Channel
-var tujuanID = -1234567891;
+var tujuanID = -100123456789;
 
 // masukkan ID user kamu, untuk mendapatkan notif jika bot terjadi error
-let adminBot = 1234567890;
+let adminBot = 5647894;
 
 // inisiasi bot, biarkan yang ini gak usah diubah
 var tg = new telegram.daftar(token);
@@ -116,8 +116,8 @@ function getAPISholat() {
         let bulan = pecah[1]
 
         // dapatkan jadwal langsung 1 bulan
-        let fetch = new tg.fetch('https://api.myquran.com/v1/sholat/jadwal/' + idLokasi + '/' + tahun + '/' + bulan)
-        var hasil = fetch.get()
+        var hasil = fetchAPI.get('/sholat/jadwal/' + idLokasi + '/' + tahun + '/' + bulan)
+        hasil.data.bulan = bulan
         user.setValue('sholat', JSON.stringify(hasil))
         let data = hasil.data;
         Logger.log(`${data.id}\n\n${data.lokasi}\n${data.daerah}` + '\n\nMendapatkan ' + data.jadwal.length + ' jadwal data.')
@@ -128,9 +128,14 @@ function getAPISholat() {
 }
 
 function getDBholat() {
-    var r = user.getValue('sholat')
-    if (!r) return { status: false, message: 'Tidak ada data.' };
-    var hasil = JSON.parse(r)
+    let sholat = user.getValue('sholat')
+    if (!sholat) return { status: false, message: 'Tidak ada data.' };
+
+    let bulan = Utilities.formatDate(new Date(), zonaTime, "MM")
+    if (!sholat.data.bulan) return { status: false, message: 'Tidak ada field bulan' };
+    if (!sholat.data.bulan == bulan) return { status: false, message: 'Tidak terdapat data bulan ' + bulan };
+
+    var hasil = JSON.parse(sholat)
     let data = hasil.data;
     Logger.log(`getDBholat: ${data.id}\n\n${data.lokasi}\n${data.daerah}` + '\n\nTerdapat ' + data.jadwal.length + ' jadwal data.')
     // Logger.log(`sample: ${tg.util.outToJSON(data.jadwal[0])}`)
@@ -187,7 +192,7 @@ function tampilkanJadwal() {
 
     jadwalSemua = jadwalSemua.replace('\n', '');
 
-    //Logger.log(`${lokasi}, ${daerah} - ${waktu}\n${jadwal}`)
+    // Logger.log(`${lokasi}, ${daerah} - ${waktu}\n${jadwal}`)
 
     pesan = pesan
         .replace(/{lokasi}/gi, lokasi)
